@@ -1,0 +1,47 @@
+{
+  "lines": 73210,
+  "words": 571788,
+  "characters": 3231475,
+  "most_common_words": [
+    {
+      "word": "the",
+      "count": 40903
+    },
+    {
+      "word": "of",
+      "count": 19816
+    },
+    {
+      "word": "and",
+      "count": 14864
+    },
+    {
+      "word": "a",
+      "count": 14494
+    },
+    {
+      "word": "to",
+      "count": 13656
+    },
+    {
+      "word": "in",
+      "count": 11147
+    },
+    {
+      "word": "he",
+      "count": 9646
+    },
+    {
+      "word": "was",
+      "count": 8619
+    },
+    {
+      "word": "that",
+      "count": 7908
+    },
+    {
+      "word": "it",
+      "count": 6646
+    }
+  ]
+}

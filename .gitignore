@@ -1,0 +1,24 @@
+# Claude Code
+.claude/
+
+# git
+.worktrees/
+
+# Python
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# Go
+bin/
+
+# Rust  
+target/
+Cargo.lock
+
+# TypeScript
+node_modules/
+dist/
+*.tsbuildinfo
+bun.lockb
+
