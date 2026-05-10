@@ -10,7 +10,17 @@ Python = reference implementation. Other languages = idiomatic reimplementation.
 - Never translate Python idioms literally — ask "how would a native X developer write this?"
 - Docker for Go/Rust/Java; local for Python/TypeScript
 
+## Tooling per language
+
+| Language   | Package/Project Manager | Runtime       |
+|------------|-------------------------|---------------|
+| Python     | uv                      | python        |
+| TypeScript | bun                     | bun           |
+| Go         | go modules              | go (Docker)   |
+| Rust       | cargo                   | cargo (Docker)|
+
 ## Theme status
+- 00-hello-world: Python ✓
 - 01-word-count: Python ✓
 - 02-csv-summary: not started
 
