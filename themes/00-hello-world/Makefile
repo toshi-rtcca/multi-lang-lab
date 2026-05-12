@@ -9,3 +9,9 @@ ts-run:
 
 ts-test:
 	cd typescript && bun test
+
+go-run:
+	cd go && docker build -t hello-world-go . && docker run --rm hello-world-go
+
+go-test:
+	cd go && docker build -t hello-world-go . && docker run --rm hello-world-go go test -v
