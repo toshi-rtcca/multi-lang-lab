@@ -20,7 +20,7 @@ Python = reference implementation. Other languages = idiomatic reimplementation.
 | Rust       | cargo                   | cargo (Docker)|
 
 ## Theme status
-- 00-hello-world: Python ✓, TypeScript ✓, Go ✓
+- 00-hello-world: Python ✓, TypeScript ✓, Go ✓, Rust ✓
 - 01-word-count: Python ✓
 - 02-csv-summary: not started
 

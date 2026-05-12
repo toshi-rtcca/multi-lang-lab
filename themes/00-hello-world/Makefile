@@ -15,3 +15,9 @@ go-run:
 
 go-test:
 	cd go && docker build -t hello-world-go . && docker run --rm hello-world-go go test -v
+
+rs-run:
+	cd rust && docker build -t hello-world-rust . && docker run --rm hello-world-rust
+
+rs-test:
+	cd rust && docker build -t hello-world-rust . && docker run --rm hello-world-rust cargo test
