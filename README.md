@@ -34,7 +34,7 @@ multi-lang-lab/
       sales-summary.json
 
   themes/
-    01-word-count/       ← 
+    word-count/       ←
       README.md
       Makefile
       spec.md
@@ -43,7 +43,7 @@ multi-lang-lab/
       go/
       rust/
       java/
-    02-csv-summary/
+    csv-summary/
 ```
 
 ## How to implement (学習の進め方)
