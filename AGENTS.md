@@ -19,10 +19,25 @@ Python = reference implementation. Other languages = idiomatic reimplementation.
 | Go         | go modules              | go (Docker)   |
 | Rust       | cargo                   | cargo (Docker)|
 
-## Theme status
-- hello-world: Python ✓, TypeScript ✓, Go ✓, Rust ✓
-- word-count: Python ✓
-- csv-summary: not started
+## Implementation status
+
+各言語実装のステータスは `themes/{theme}/{language}/README.md` の front matter で管理する。
+
+### Front matter schema
+
+| Field    | Values                       | Required |
+|----------|------------------------------|----------|
+| language | python, typescript, go, rust | yes      |
+| version  | runtime version string       | yes      |
+| status   | done, wip, not-started       | yes      |
+
+TypeScript の `version` は bun のバージョンを記録する。
+
+### Status の収集
+
+```bash
+find themes -path "*/python/README.md" -o -path "*/typescript/README.md" -o -path "*/go/README.md" -o -path "*/rust/README.md"
+```
 
 ## GitHub operations
 

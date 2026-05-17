@@ -18,32 +18,26 @@ Coding Agent を活用し、複数プログラミング言語を同時に学習�
 multi-lang-lab/
   README.md              ← this file
   AGENTS.md              ← guidance for coding agents
-  CLAUDE.md              ← sama as AGENTS.md
-  .gitignore             ← for top-level 
+  CLAUDE.md              ← same as AGENTS.md
+  .gitignore
 
   docs/
     learning-log.md
     language-comparison.md
 
   shared/
-    fixtures/
-      sample.txt         ← for word-count
-      sales.csv
-    expected/
-      word-count.json
-      sales-summary.json
+    fixtures/            ← shared test input files
+    expected/            ← shared expected output files
 
   themes/
-    word-count/       ←
-      README.md
+    {theme}/
+      README.md          ← task description
+      spec.md            ← implementation spec (source of truth)
       Makefile
-      spec.md
-      python/
-      typescript/
-      go/
-      rust/
-      java/
-    csv-summary/
+      language-comparison.md
+      {language}/
+        README.md        ← front matter: language, version, status
+        ...              ← implementation files
 ```
 
 ## How to implement (学習の進め方)

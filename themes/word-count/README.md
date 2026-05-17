@@ -5,9 +5,3 @@ Given a text file, outputs lines, words, characters, and 10 most common words in
 
 Inspired by [Word frequency from Rosseta Code](https://rosettacode.org/wiki/Word_frequency)
 
-## Set up
-
-### Python
-```bash
-uv sync
-```
