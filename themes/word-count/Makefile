@@ -9,3 +9,9 @@ ts-run:
 
 ts-test:
 	cd typescript && bun test
+
+go-run:
+	cd go && docker build -t word-count-go . && docker run --rm -v $(CURDIR)/../../shared:/shared word-count-go --input /shared/fixtures/word-count.txt
+
+go-test:
+	cd go && docker build -t word-count-go . && docker run --rm --entrypoint go word-count-go test -v
