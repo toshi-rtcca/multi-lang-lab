@@ -1,0 +1,14 @@
+{
+  "name": "word-count",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "word_count": "./src/main.ts"
+  },
+  "scripts": {
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
