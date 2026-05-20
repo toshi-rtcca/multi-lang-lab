@@ -10,6 +10,15 @@ Python = reference implementation. Other languages = idiomatic reimplementation.
 - Never translate Python idioms literally — ask "how would a native X developer write this?"
 - Docker for Go/Rust/Java; local for Python/TypeScript
 
+## Theme README conventions
+
+各テーマの `README.md` (`themes/{theme}/README.md`) には以下を含める:
+
+- `## Task` — テーマの説明
+- `## Language Comparison` — 各言語の実装比較表
+
+Language Comparison では、そのテーマで学べる言語間の違いを表形式でまとめる。
+
 ## Tooling per language
 
 | Language   | Package/Project Manager | Runtime       |
