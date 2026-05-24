@@ -14,10 +14,10 @@ go-run:
 	cd go && docker build -t reverse-string-go . && docker run --rm reverse-string-go $(INPUT)
 
 go-test:
-	cd go && docker build -t reverse-string-go . && docker run --rm reverse-string-go go test -v
+	cd go && docker build -t reverse-string-go . && docker run --rm --entrypoint go reverse-string-go test -v
 
 rs-run:
 	cd rust && docker build -t reverse-string-rust . && docker run --rm reverse-string-rust $(INPUT)
 
 rs-test:
-	cd rust && docker build -t reverse-string-rust . && docker run --rm reverse-string-rust cargo test
+	cd rust && docker build -t reverse-string-rust . && docker run --rm --entrypoint cargo reverse-string-rust test
