@@ -19,6 +19,18 @@ Python = reference implementation. Other languages = idiomatic reimplementation.
 
 Language Comparison では、そのテーマで学べる言語間の違いを表形式でまとめる。
 
+## Theme implementation workflow
+
+新テーマを追加する際は、以下の3ステップで実装し、各ステップごとにPRを作成する。
+
+| Step | 内容 | PR type |
+|------|------|---------|
+| 1 | spec.md + README.md | docs |
+| 2 | Python 実装 + test (reference) | feat |
+| 3 | TypeScript / Go / Rust 実装 + test | feat |
+
+各PRは前のPRがマージされてから作成する。
+
 ## Tooling per language
 
 | Language   | Package/Project Manager | Runtime       |
