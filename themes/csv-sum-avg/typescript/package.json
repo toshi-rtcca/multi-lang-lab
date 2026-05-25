@@ -1,0 +1,14 @@
+{
+  "name": "csv-sum-avg",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "csv_sum_avg": "./src/main.ts"
+  },
+  "scripts": {
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
