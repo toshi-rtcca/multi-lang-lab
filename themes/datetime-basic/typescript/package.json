@@ -1,0 +1,17 @@
+{
+  "name": "datetime-basic",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "datetime_basic": "./src/main.ts"
+  },
+  "scripts": {
+    "test": "bun test"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.13"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
