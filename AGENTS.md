@@ -14,5 +14,5 @@ Python = reference implementation. Other languages = idiomatic reimplementation.
 
 Detailed operational procedures are organized into specialized skills:
 
-- `@skills/theme-ops.md` — Theme implementation workflow, README/Makefile conventions, status management, issue templates
-- `@skills/dev-workflow.md` — GitHub PR creation workflow, branch and worktree management
+- `@.claude/skills/theme-ops.md` — Theme implementation workflow, README/Makefile conventions, status management, issue templates
+- `@.claude/skills/dev-workflow.md` — GitHub PR creation workflow, branch and worktree management
