@@ -1,19 +1,23 @@
-# Learning multiple languages with Coding Agents
+# Learning Multiple Languages with Coding Agents
 
-Coding Agent を活用し、複数プログラミング言語を同時に学習する。
+Use coding agents to learn multiple programming languages simultaneously.
 
-## Languages (対象言語)
+## For Coding Agents
+- See [AGENTS.md](AGENTS.md) for agent context and conventions
+- See [.claude/skills/](.claude/skills/) for operational procedures
+
+## Languages
 - Python
 - TypeScript
 - Go
 - Rust
 
-## Policy (基本方針)
-同じ題材を複数言語で実装し、設計思想を比較しながら学習することを目的とする。
+## Policy
+The purpose is to learn through implementing the same topic in multiple languages and comparing their design philosophies.
 
-言語の文法は実装に必要な範囲で都度調べる。
+Language syntax is looked up as needed during implementation.
 
-## Structure (構成)
+## Structure
 ```
 multi-lang-lab/
   README.md              ← this file
@@ -40,9 +44,8 @@ multi-lang-lab/
         ...              ← implementation files
 ```
 
-## How to implement (学習の進め方)
-1. **テーマ選定** - [Rosetta Code](https://rosettacode.org/wiki/Rosetta_Code) などから
-2. **仕様記述** - テーマディレクトリの `spec.md` に記載する
-3. **実装順** - Python -> TypeScript -> Go -> Rust
-4. **実装後の学び** - `language-comparison.md` 記載の観点で各言語を比較する
-
+## How to Implement
+1. **Choose a theme** - from [Rosetta Code](https://rosettacode.org/wiki/Rosetta_Code) or similar sources
+2. **Write specification** - document in `spec.md` of the theme directory
+3. **Implementation order** - Python → TypeScript → Go → Rust
+4. **Post-implementation learning** - compare languages based on perspectives in `language-comparison.md`
