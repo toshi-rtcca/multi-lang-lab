@@ -2,49 +2,49 @@
 
 ## Theme README conventions
 
-各テーマの `README.md` (`themes/{theme}/README.md`) には以下を含める:
+Each theme's `README.md` (`themes/{theme}/README.md`) should include:
 
-- `## Task` — テーマの説明
-- `## Language Comparison` — 各言語の実装比較表
+- `## Task` — Description of the theme
+- `## Language Comparison` — Implementation comparison table for each language
 
-Language Comparison では、そのテーマで学べる言語間の違いを表形式でまとめる。
+In Language Comparison, summarize language-specific differences that can be learned from this theme in table format.
 
 ## Theme implementation workflow
 
-新テーマを追加する際は、以下の3ステップで実装し、各ステップごとにPRを作成する。
+When adding a new theme, implement it in 3 steps and create a PR for each step.
 
-| Step | 内容 | PR type |
-|------|------|---------|
+| Step | Content | PR type |
+|------|---------|---------|
 | 1 | spec.md + README.md + shared fixtures/expected | docs |
-| 2 | Python 実装 + test (reference) | feat |
-| 3 | TypeScript / Go / Rust 実装 + test | feat |
+| 2 | Python implementation + test (reference) | feat |
+| 3 | TypeScript / Go / Rust implementation + test | feat |
 
-各PRは前のPRがマージされてから作成する。
+Create each PR after the previous PR is merged.
 
 ### Step completion criteria
 
-各 Step の完了条件:
+Completion criteria for each Step:
 
 #### Step 1 (docs)
-- `themes/{theme}/spec.md` 作成
-- `themes/{theme}/README.md` 作成
-- `shared/fixtures/{theme}/` にテストデータ配置
-- `shared/expected/{theme}/` に期待出力配置
+- Create `themes/{theme}/spec.md`
+- Create `themes/{theme}/README.md`
+- Place test data in `shared/fixtures/{theme}/`
+- Place expected output in `shared/expected/{theme}/`
 
 #### Step 2 & 3 (feat)
-- CLI 実行が仕様通り動作する
-- テストが全て通る
-- `make {lang}-run` および `make {lang}-test` が成功する
-- lint・フォーマットチェックをパスする
+- CLI execution works according to specification
+- All tests pass
+- `make {lang}-run` and `make {lang}-test` succeed
+- Pass lint and format checks
 
 ## Makefile conventions
 
-各テーマの `Makefile` は以下のターゲットを標準とする:
+Each theme's `Makefile` should have the following standard targets:
 
-| Target | 説明 |
-|--------|------|
-| `{lang}-run` | CLI を実行（例: `python-run`, `go-run`） |
-| `{lang}-test` | テストを実行 |
+| Target | Description |
+|--------|-------------|
+| `{lang}-run` | Run the CLI (e.g., `python-run`, `go-run`) |
+| `{lang}-test` | Run tests |
 
 ## Tooling per language
 
@@ -57,7 +57,7 @@ Language Comparison では、そのテーマで学べる言語間の違いを表
 
 ## Implementation status
 
-各言語実装のステータスは `themes/{theme}/{language}/README.md` の front matter で管理する。
+The status of each language implementation is managed in the front matter of `themes/{theme}/{language}/README.md`.
 
 ### Front matter schema
 
@@ -67,16 +67,16 @@ Language Comparison では、そのテーマで学べる言語間の違いを表
 | version  | runtime version string       | yes      |
 | status   | done, wip, not-started       | yes      |
 
-TypeScript の `version` は bun のバージョンを記録する。
+For TypeScript, the `version` field records the bun version.
 
 ### README content
 
-各言語の `README.md` には front matter に加えて、必要に応じて以下を記載:
+Each language's `README.md` should include the front matter and, if necessary:
 
-- セットアップ手順
-- CLI 実行例
+- Setup instructions
+- CLI execution examples
 
-### Status の収集
+### Collecting status
 
 ```bash
 find themes -path "*/python/README.md" -o -path "*/typescript/README.md" -o -path "*/go/README.md" -o -path "*/rust/README.md"
@@ -84,4 +84,4 @@ find themes -path "*/python/README.md" -o -path "*/typescript/README.md" -o -pat
 
 ## Issue templates
 
-新規テーマ用のイシューは `.github/ISSUE_TEMPLATE/new-theme.md` を使用する。
+Use `.github/ISSUE_TEMPLATE/new-theme.md` for issues about new themes.
