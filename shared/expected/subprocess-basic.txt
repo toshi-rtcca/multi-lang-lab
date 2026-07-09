@@ -1,0 +1,11 @@
+size   filename
+101   juliet.txt
+91   india.txt
+81   hotel.txt
+71   golf.txt
+61   foxtrot.txt
+51   echo.txt
+41   delta.txt
+31   charlie.txt
+21   bravo.txt
+11   alpha.txt
