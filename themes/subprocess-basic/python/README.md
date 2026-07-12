@@ -1,10 +1,23 @@
 ---
 language: python
 version: "3.14"
-status: not-started
+status: done
 ---
 
 ## Setup
 
-Implementation will be added in Step 2.
+```bash
+uv sync
+```
 
+## Run
+
+```bash
+uv run sort-ls-l --path ../../../shared/fixtures/subprocess-basic
+```
+
+## Test
+
+```bash
+uv run pytest
+```
