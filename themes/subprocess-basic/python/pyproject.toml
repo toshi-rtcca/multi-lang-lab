@@ -1,0 +1,24 @@
+[project]
+name = "subprocess-basic"
+version = "0.1.0"
+description = "Sort ls -l output by file size"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+sort-ls-l = "subprocess_basic.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/subprocess_basic"]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
