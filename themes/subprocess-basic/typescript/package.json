@@ -1,0 +1,14 @@
+{
+  "name": "subprocess-basic",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "sort-ls-l": "./src/main.ts"
+  },
+  "scripts": {
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}

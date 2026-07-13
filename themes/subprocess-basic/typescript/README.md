@@ -1,10 +1,23 @@
 ---
 language: typescript
 version: "bun"
-status: not-started
+status: done
 ---
 
 ## Setup
 
-Implementation will be added in Step 3.
+```bash
+bun install
+```
 
+## Run
+
+```bash
+bun run src/main.ts --path ../../../shared/fixtures/subprocess-basic
+```
+
+## Test
+
+```bash
+bun test
+```
