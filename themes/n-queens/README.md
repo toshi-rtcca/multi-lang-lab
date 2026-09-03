@@ -40,12 +40,23 @@ backtracking algorithm outline.
 
 ## Language Comparison
 
-_To be filled in after the Python, TypeScript, Go, and Rust
-implementations are complete._
-
 | Feature | Python | TypeScript | Go | Rust |
 |---------|--------|------------|-----|------|
-| Mutable backtracking state | TBD | TBD | TBD | TBD |
-| Recursion vs. explicit stack/loop | TBD | TBD | TBD | TBD |
-| Conflict checking | TBD | TBD | TBD | TBD |
-| CLI args | TBD | TBD | TBD | TBD |
+| Mutable backtracking state | Single `columns: list[int]`, mutated in place, captured by a nested closure | Same as Python: `columns: number[]` mutated in place, captured by a nested closure | `columns []int` mutated in place; the recursive closure needs the two-step `var backtrack func(int)` declaration since Go closures can't self-reference in one statement | `columns: &mut Vec<i32>` threaded explicitly through a top-level `fn` parameter — Rust closures can't easily recurse, so backtracking state is passed by mutable reference instead of captured |
+| Recursion vs. explicit stack/loop | Plain recursion (nested closure) | Plain recursion (nested closure) | Plain recursion (self-referencing closure) | Plain recursion (top-level fn) |
+| Conflict checking | O(row) column/diagonal scan (`is_safe`) | O(row) column/diagonal scan (`isSafe`) | O(row) column/diagonal scan (`isSafe`) | O(row) column/diagonal scan (`is_safe`) |
+| CLI args | `argparse`, with `--n` parsed manually via `int()` (bypassing argparse's own int type) | Manual `argv` scan for `--n=value` / `--n value` | `flag.String` + manual `strconv.Atoi` | Manual `env::args()` scan + `.parse::<i64>()` |
+
+Recursion depth is bounded by N (8), so none of the four needed an
+explicit stack — the main structural divergence is Rust's inability to
+write a self-referencing closure, which pushes the mutable backtracking
+state from a captured variable (Python/TypeScript/Go) into an explicit
+`&mut` parameter (Rust). None of the four implementations use
+bitmask-based column/diagonal pruning; at N=8 a plain O(row) conflict
+scan is fast enough that the extra complexity would work against this
+theme's learning focus (clarity of the backtracking algorithm itself).
+All four implementations deliberately bypass their standard library's
+built-in flag/argument type validation (`argparse`'s `type=int`, Go's
+`flag.Int`) in favor of manual integer parsing, since the built-in
+validators exit with a different code than the spec's uniform exit-code-1
+contract for an invalid `--n`.

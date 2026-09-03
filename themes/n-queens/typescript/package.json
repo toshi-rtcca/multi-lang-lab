@@ -1,0 +1,14 @@
+{
+  "name": "n-queens",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "n-queens": "./src/main.ts"
+  },
+  "scripts": {
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
