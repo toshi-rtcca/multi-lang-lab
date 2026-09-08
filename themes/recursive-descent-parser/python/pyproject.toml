@@ -1,0 +1,23 @@
+[project]
+name = "recursive-descent-parser"
+version = "0.1.0"
+description = "Recursive-descent parser and evaluator for arithmetic expressions"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+recursive-descent-parser = "recursive_descent_parser.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/recursive_descent_parser"]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

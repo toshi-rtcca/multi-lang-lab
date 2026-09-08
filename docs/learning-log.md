@@ -37,3 +37,19 @@ parameters instead of capturing them. This is the one language where the
 "mutable state captured by a nested function" idiom used in Python/TypeScript/Go
 doesn't carry over directly — the mutable state has to be threaded explicitly
 through the borrow checker instead.
+
+## 2026-09-08 — recursive-descent-parser (Python)
+
+Python's `//` is floor division, not the truncate-toward-zero integer division
+that Go, Rust, and C give you for free — `-3 // 2` is `-2` in Python but `-1`
+everywhere else. Since a subtraction earlier in an expression can produce a
+negative intermediate result that a later `/` divides (e.g. `(1 - 4) / 2`),
+relying on `//` directly would have silently made the Python reference
+implementation diverge from the other three languages on that edge case. The
+fix was a small sign-aware `_truncating_divide` helper (`abs(left) // abs(right)`,
+negated when the operand signs differ) instead of using `//` on the raw
+operands. Separately, splitting the pipeline into `tokenize` → `parse` (into
+`Number`/`BinaryOp` dataclasses) → `evaluate` as three independent functions,
+rather than evaluating while parsing, made each grammar production
+(`parse_expr`/`parse_term`/`parse_factor`) a pure function of the token stream
+with no side effects to reason about.
