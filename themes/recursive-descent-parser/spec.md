@@ -71,9 +71,16 @@ Each grammar production becomes one parsing function:
 ## Evaluation
 A separate `evaluate(node)` function walks the AST: a `Number` node
 evaluates to its value; a `BinaryOp` node evaluates both operands
-recursively, then applies the operator. Division is integer division;
-dividing by zero is an evaluation-time error (not a parse-time error),
-since the AST for `1 / 0` is perfectly well-formed.
+recursively, then applies the operator. Division is integer division
+that **truncates toward zero** (e.g. `-7 / 2 = -3`), matching the
+default `/` behavior for integers in Go, Rust, and C, rather than
+Python's floor-division `//` (e.g. Python must not use `//` directly for
+this operator). Although input literals are always non-negative, a
+subtraction earlier in the expression can still produce a negative
+intermediate result that a later `/` divides, so this rule matters even
+though no shared fixture currently exercises it. Dividing by zero is an
+evaluation-time error (not a parse-time error), since the AST for
+`1 / 0` is perfectly well-formed.
 
 ## Output Format
 On success, print the evaluated integer result to stdout, followed by a
@@ -122,6 +129,7 @@ against actual output.
 | `nested-parens` | `(1 + (2 + 3) * (4 - 1))` | `16` | nested grouping |
 | `whitespace-insensitive` | `  1 +2*3` | `7` | uneven whitespace |
 | `readme-example` | `1 + 2 * (3 - 4)` | `-1` | the theme's own example |
+| `truncating-division` | `(1 - 4) / 2` | `-1` | division truncates toward zero, not floor (`-1`, not `-2`) |
 | `division-by-zero` | `1 / 0` | `ERROR` | evaluation error |
 | `unbalanced-paren` | `(1 + 2` | `ERROR` | parse error |
 | `trailing-tokens` | `1 + 2)` | `ERROR` | parse error |
