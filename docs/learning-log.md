@@ -53,3 +53,41 @@ operands. Separately, splitting the pipeline into `tokenize` → `parse` (into
 rather than evaluating while parsing, made each grammar production
 (`parse_expr`/`parse_term`/`parse_factor`) a pure function of the token stream
 with no side effects to reason about.
+
+## 2026-09-10 — recursive-descent-parser (TypeScript)
+
+TypeScript's discriminated unions made the AST port nearly mechanical: a
+`kind: "Number" | "BinaryOp"` tag field on plain interfaces gives the compiler
+enough information to narrow `Expr` inside `evaluate`'s `if (expr.kind ===
+"Number")` check, with no `instanceof` or class hierarchy needed — closer to
+Rust's `enum` than to Python's `@dataclass` classes, even though the runtime
+representation is just a plain object literal. `Math.trunc(left / right)`
+covers the truncate-toward-zero division rule for free, since JS's `/` always
+produces a float and `Math.trunc` chops the fractional part toward zero
+regardless of sign — no sign-aware branching like Python's `_truncating_divide`
+was needed here.
+
+## 2026-09-10 — recursive-descent-parser (Go)
+
+Go has no sum types, so the `Expr` AST needed an interface with an
+*unexported* marker method (`exprNode()`) to fake a sealed union — any type
+outside this package could still implement `Expr` if the method were
+exported, so the leading lowercase letter is load-bearing, not a style
+choice. Evaluating the tree then requires a type switch (`switch e :=
+expr.(type) { case Number: ...; case BinaryOp: ... }`) instead of the
+one-line `isinstance`/`kind` check the other languages get. Go's integer `/`
+already truncates toward zero per the language spec, so — unlike Python and
+TypeScript — no helper function was needed at all for the division rule.
+
+## 2026-09-10 — recursive-descent-parser (Rust)
+
+Rust's `enum Expr { Number(i64), BinaryOp(Op, Box<Expr>, Box<Expr>) }` needs
+`Box` around the recursive fields because an enum's size must be known at
+compile time — an `Expr` containing an unboxed `Expr` would be infinitely
+large, so indirection through the heap is required, not optional, for any
+recursive data type. A single `ExprError` enum with `Lex`/`Parse`/`Eval`
+variants (rather than three separate error types like Python/TypeScript)
+made every stage's function signature `Result<T, ExprError>`, so the `?`
+operator could propagate any of the three failure kinds through
+`tokenize`/`parse`/`evaluate` without a single manual `if err != nil` check —
+the sharpest contrast with Go's explicit error checking after every call.
