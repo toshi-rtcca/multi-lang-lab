@@ -44,10 +44,22 @@ decisions, error handling contract, and test fixtures.
 
 | Feature | Python | TypeScript | Go | Rust |
 |---------|--------|------------|-----|------|
-| AST representation | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Error handling idiom | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Mutual recursion style | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Tokenizer style | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
+| AST representation | Frozen `@dataclass` classes (`Number`, `BinaryOp`) joined by a `Union` type alias | A discriminated union: `NumberNode`/`BinaryOpNode` interfaces tagged by a `kind` field | A sealed interface (`Expr`) with an unexported `exprNode()` marker method, implemented by two structs, switched over with a type switch | An `enum Expr { Number(i64), BinaryOp(Op, Box<Expr>, Box<Expr>) }`, with a further `enum Op` for the operator itself |
+| Error handling idiom | Three exception classes (`LexError`, `ParseError`, `EvalError`) raised and caught at the CLI boundary | Three `Error` subclasses, thrown and matched with `instanceof` in `main.ts` | Plain `error` return values from every function (`fmt.Errorf`); no custom error type needed | One `ExprError` enum (`Lex`/`Parse`/`Eval` variants) threaded through `Result<T, ExprError>`, propagated with `?` |
+| Mutual recursion style | Three methods on a `_Parser` class (`parse_expr`/`parse_term`/`parse_factor`), each returning an `Expr` node | Three methods on a `TokenParser` class, structurally identical to Python's | Three methods on a `*parser` pointer receiver, returning `(Expr, error)` pairs that must be checked at every call site | Three private methods on a `Parser` struct, returning `Result<Expr, ExprError>` and propagated with `?` instead of manual checks |
+| Tokenizer style | A single `tokenize` function building a `list[Token]` via an `Enum`-tagged dataclass | A single `tokenize` function building a `Token[]`, `TokenType` as a string union | A single `tokenize` function building a `[]Token`, `TokenType` as an `int` (`iota`) enum | A single `tokenize` function building a `Vec<Token>`, `TokenType` as a `#[derive(PartialEq, Eq)]` enum |
 
-_Comparison table and synthesis to be filled in once all four
-implementations are complete._
+All four implementations share the exact same three-stage pipeline
+(`tokenize` → `parse` → `evaluate`) and the same left-leaning
+`BinaryOp` construction for associativity, so the differences above are
+purely about each language's type system, not about algorithmic
+divergence. The starkest contrast is error propagation: Go's explicit
+`if err != nil` after every call is the most verbose of the four, while
+Rust's `?` operator gets the same explicitness at zero syntactic cost by
+threading a single `ExprError` enum through every `Result`. Python and
+TypeScript converge on nearly identical designs (classes with methods,
+exceptions caught at the boundary) since both are structurally similar
+here; Go and Rust diverge from each other more than from either
+dynamic-adjacent language, despite both being statically typed and
+compiled — Go's lack of sum types forces an interface-plus-type-switch
+workaround for the AST, where Rust's `enum` expresses it directly.
