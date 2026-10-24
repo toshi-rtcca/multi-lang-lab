@@ -23,29 +23,22 @@ multi-lang-lab/
   README.md              ← this file
   AGENTS.md              ← guidance for coding agents
   CLAUDE.md              ← same as AGENTS.md
-  .gitignore
 
-  docs/
-    learning-log.md
-    language-comparison.md
-
-  shared/
-    fixtures/            ← shared test input files
-    expected/            ← shared expected output files
+  sketches/
+    {yyyymmdd}-{topic}/  ← quick single-language experiments
 
   themes/
     {theme}/
-      README.md          ← task description
-      spec.md            ← implementation spec (source of truth)
+      README.md          ← task + language comparison table
+      cases.json         ← shared test cases (source of truth with the issue)
       Makefile
-      language-comparison.md
-      {language}/
-        README.md        ← front matter: language, version, status
-        ...              ← implementation files
+      {language}/        ← implementation + tests
+
+  docs/, shared/         ← used by legacy themes only
 ```
 
 ## How to Implement
-1. **Choose a theme** - from [Rosetta Code](https://rosettacode.org/wiki/Rosetta_Code) or similar sources
-2. **Write specification** - document in `spec.md` of the theme directory
-3. **Implementation order** - Python → TypeScript → Go → Rust
-4. **Post-implementation learning** - compare languages based on perspectives in `language-comparison.md`
+1. **Sketch** - explore the idea in Python or Rust under `sketches/`
+2. **Open a theme issue** - Goal, comparison points, API signature, cases, and a handoff prompt
+3. **Implement in one PR** - one commit per language: Python → TypeScript → Go → Rust
+4. **Compare** - fill in the Language Comparison table in the theme README

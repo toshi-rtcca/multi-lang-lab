@@ -4,38 +4,26 @@ about: Propose a new multi-language comparison theme
 labels: theme
 ---
 
-### What
+### Goal
 
-<!-- 概要 -->
+<!-- What this theme is meant to teach. Link the sketch if one exists. -->
 
-#### CLI interface
+### Comparison points
 
-<!-- コマンド仕様 -->
+<!-- Language differences to observe (syntax, idioms, libraries, error handling, ...) -->
 
-#### Input / Output
+### API signature
 
-<!-- 入出力の例 -->
+<!-- Function to implement in every language, e.g. `get_status(url: str) -> int` -->
 
-#### Spec
+### Cases
 
-<!-- 詳細仕様 -->
+<!-- A few representative cases; these become themes/{theme}/cases.json -->
 
-#### Edge Cases
+| name | input | expected |
+|------|-------|----------|
+|      |       |          |
 
-<!-- エッジケース -->
+### Handoff prompt
 
-#### Target languages
-
-<!-- 実装する言語 -->
-
-### Why
-
-<!-- 動機 -->
-
-#### Comparison points
-
-<!-- 比較ポイント -->
-
-### Done When
-
-<!-- 完了条件 -->
+<!-- Prompt for the coding agent (Japanese is fine) -->

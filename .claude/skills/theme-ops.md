@@ -1,50 +1,73 @@
 # Theme Operations
 
+## Theme layout
+
+```
+themes/{theme}/
+├── README.md        # Task + Language Comparison
+├── cases.json       # Shared test cases, read by every language's tests
+├── Makefile
+├── python/
+├── typescript/
+├── go/
+└── rust/
+```
+
+- Implement the theme as a function (the API signature in the issue) plus tests.
+- A CLI (`main`) is optional. Add one only when I/O itself is the learning point (e.g. subprocess, HTTP); keep it a thin wrapper.
+- Tests must not depend on the external network. Start local servers or fakes inside the tests when needed.
+
+### cases.json
+
+A JSON array shared by all languages:
+
+```json
+[
+  { "name": "basic", "input": "1 + 2", "expected": 3 }
+]
+```
+
+Fields may be adapted per theme (e.g. `{ "name", "path", "expected_status" }`), but every language must read the same file.
+
 ## Theme README conventions
 
 Each theme's `README.md` (`themes/{theme}/README.md`) should include:
 
-- `## Task` — Description of the theme
-- `## Language Comparison` — Implementation comparison table for each language
+- `## Task` — Description of the theme, including the API signature
+- `## Language Comparison` — Comparison table of what each language teaches in this theme
 
-In Language Comparison, summarize language-specific differences that can be learned from this theme in table format.
+This is the only place for comparison notes. Per-language READMEs are not required; add one only for non-obvious setup.
 
 ## Theme implementation workflow
 
-When adding a new theme, implement it in 3 steps and create a PR for each step.
+One theme = one issue = one PR. Inside the PR, commit per language:
 
-| Step | Content | PR type |
-|------|---------|---------|
-| 1 | spec.md + README.md + shared fixtures/expected | docs |
-| 2 | Python implementation + test (reference) | feat |
-| 3 | TypeScript / Go / Rust implementation + test | feat |
+| Order | Commit | Content |
+|-------|--------|---------|
+| 1 | `docs({theme}): add README and cases` | README.md, cases.json, Makefile skeleton |
+| 2 | `feat({theme}): add Python implementation` | Python reference implementation + tests |
+| 3 | `feat({theme}): add TypeScript implementation` | |
+| 4 | `feat({theme}): add Go implementation` | |
+| 5 | `feat({theme}): add Rust implementation` | |
 
-Create each PR after the previous PR is merged.
+Flow: issue → plan (approved by the user) → commits above → single PR.
 
-### Step completion criteria
+### Completion criteria
 
-Completion criteria for each Step:
+- Each language commit leaves its own `make {lang}-test` green
+- The PR is complete when all languages' tests pass
 
-#### Step 1 (docs)
-- Create `themes/{theme}/spec.md`
-- Create `themes/{theme}/README.md`
-- Place test data in `shared/fixtures/{theme}/`
-- Place expected output in `shared/expected/{theme}/`
-
-#### Step 2 & 3 (feat)
-- CLI execution works according to specification
-- All tests pass
-- `make {lang}-run` and `make {lang}-test` succeed
-- Pass lint and format checks
+Lint/format are recommended but not required.
 
 ## Makefile conventions
 
-Each theme's `Makefile` should have the following standard targets:
+Standard targets per theme:
 
 | Target | Description |
 |--------|-------------|
-| `{lang}-run` | Run the CLI (e.g., `python-run`, `go-run`) |
-| `{lang}-test` | Run tests |
+| `{lang}-test` | Run tests (`py`, `ts`, `go`, `rs`) |
+| `test` | Run all languages' tests |
+| `{lang}-run` | Optional; only when the theme has a CLI |
 
 ## Tooling per language
 
@@ -55,33 +78,11 @@ Each theme's `Makefile` should have the following standard targets:
 | Go         | go modules              | go (Docker)   |
 | Rust       | cargo                   | cargo (Docker)|
 
-## Implementation status
+## Legacy themes
 
-The status of each language implementation is managed in the front matter of `themes/{theme}/{language}/README.md`.
-
-### Front matter schema
-
-| Field    | Values                       | Required |
-|----------|------------------------------|----------|
-| language | python, typescript, go, rust | yes      |
-| version  | runtime version string       | yes      |
-| status   | done, wip, not-started       | yes      |
-
-For TypeScript, the `version` field records the bun version.
-
-### README content
-
-Each language's `README.md` should include the front matter and, if necessary:
-
-- Setup instructions
-- CLI execution examples
-
-### Collecting status
-
-```bash
-find themes -path "*/python/README.md" -o -path "*/typescript/README.md" -o -path "*/go/README.md" -o -path "*/rust/README.md"
-```
+Themes created before this workflow keep `spec.md`, `shared/fixtures/`, `shared/expected/`,
+and per-language READMEs with status front matter. Do not migrate them.
 
 ## Issue templates
 
-Use `.github/ISSUE_TEMPLATE/new-theme.md` for issues about new themes.
+Use `.github/ISSUE_TEMPLATE/new-theme.md` for new themes. The issue's Handoff prompt is the starting point for the coding agent.
