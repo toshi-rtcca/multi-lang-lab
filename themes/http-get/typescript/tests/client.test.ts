@@ -41,7 +41,9 @@ describe("getStatus", () => {
     test(c.name, async () => {
       if (c.expected_error) {
         const error = await getStatus(closedPortUrl(), 1000).catch((e) => e);
-        expect(error).toBeInstanceOf(TypeError);
+        // The error class differs across Bun versions (Error in 1.3, TypeError in 1.4);
+        // `code` is the stable part.
+        expect(error).toBeInstanceOf(Error);
         expect(error.code).toBe(ERROR_CODES[c.expected_error]);
       } else {
         expect(await getStatus(baseUrl + c.path)).toBe(c.expected_status!);
