@@ -1,0 +1,7 @@
+[
+  { "name": "ok", "path": "/ok", "expected_status": 200 },
+  { "name": "not-found", "path": "/missing", "expected_status": 404 },
+  { "name": "server-error", "path": "/error", "expected_status": 500 },
+  { "name": "redirect-not-followed", "path": "/redirect", "expected_status": 302 },
+  { "name": "connection-refused", "target": "closed-port", "expected_error": "connect" }
+]
