@@ -2,7 +2,7 @@
  * Return the status code of a GET request.
  *
  * Non-2xx responses resolve normally. Transport failures reject with an
- * error whose `code` Bun sets (e.g. "ConnectionRefused"); a timeout rejects
+ * error whose `code` Bun sets (e.g. "ECONNREFUSED"); a timeout rejects
  * with a `DOMException` named "TimeoutError".
  */
 export async function getStatus(url: string, timeoutMs = 5000): Promise<number> {

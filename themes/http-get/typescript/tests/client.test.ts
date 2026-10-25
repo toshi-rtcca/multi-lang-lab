@@ -11,7 +11,8 @@ type Case = {
 };
 
 // Language-neutral error kinds in cases.json -> Bun error codes.
-const ERROR_CODES: Record<string, string> = { connect: "ConnectionRefused" };
+// Bun 1.4.4 uses the Node.js-style code; 1.4.2 and earlier use "ConnectionRefused".
+const ERROR_CODES: Record<string, string[]> = { connect: ["ConnectionRefused", "ECONNREFUSED"] };
 
 const ROUTES: Record<string, number> = { "/ok": 200, "/missing": 404, "/error": 500, "/redirect": 302 };
 
@@ -44,7 +45,7 @@ describe("getStatus", () => {
         // The error class differs across Bun versions (Error in 1.3, TypeError in 1.4);
         // `code` is the stable part.
         expect(error).toBeInstanceOf(Error);
-        expect(error.code).toBe(ERROR_CODES[c.expected_error]);
+        expect(ERROR_CODES[c.expected_error]).toContain(error.code);
       } else {
         expect(await getStatus(baseUrl + c.path)).toBe(c.expected_status!);
       }

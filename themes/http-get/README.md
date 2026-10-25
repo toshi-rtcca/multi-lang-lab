@@ -40,7 +40,7 @@ make py-test   # or ts-test / go-test / rs-test, or `make test` for all
 | Redirects by default | Not followed | Followed | Followed (up to 10) | Followed (up to 10) |
 | Disabling redirects | `follow_redirects=False` | `redirect: "manual"` | `CheckRedirect` returning `http.ErrUseLastResponse` | `.max_redirects(0)` |
 | Timeout | `timeout=` argument | `signal: AbortSignal.timeout(ms)` | `http.Client{Timeout}` | `.timeout_global(Some(d))` |
-| Connection refused | Raises `httpx2.ConnectError` | Rejects with an error whose `code` is `"ConnectionRefused"` (Bun) | `error` wrapping `*net.OpError` (`Op == "dial"`) | Own `Error::Connect`, mapped from `ureq::Error::Io` (`ConnectionRefused`) |
+| Connection refused | Raises `httpx2.ConnectError` | Rejects with an error whose `code` is `"ECONNREFUSED"` (Bun 1.4.4; `"ConnectionRefused"` in 1.4.2 and earlier) | `error` wrapping `*net.OpError` (`Op == "dial"`) | Own `Error::Connect`, mapped from `ureq::Error::Io` (`ConnectionRefused`) |
 | Error model | Exception hierarchy (`ConnectError` < … < `HTTPError`) | Rejected promise, untyped (`catch (e: unknown)`) | `error` value + `errors.As` | `Result` + own `enum`, `From<ureq::Error>` for `?` |
 | Test server | `http.server.ThreadingHTTPServer` in a thread | `Bun.serve({ port: 0 })` | `httptest.NewServer` | Hand-written `std::net::TcpListener` |
 | Reading `cases.json` | `json` + `pathlib` | `import cases from "../../cases.json"` | `encoding/json` into a tagged struct | `serde` + `serde_json` (dev-dependencies) |
@@ -50,5 +50,13 @@ make py-test   # or ts-test / go-test / rs-test, or `make test` for all
 Checked during implementation (2026-10):
 
 - **ureq 3.5.0**: `http_status_as_error` defaults to `true`, so 4xx/5xx are `Err(Error::StatusCode(u16))` unless disabled. `max_redirects(0)` returns the 3xx response as-is (no `TooManyRedirects` error). Connection refused surfaces as `ureq::Error::Io` with `ErrorKind::ConnectionRefused`, not `Error::ConnectionFailed`.
-- **Bun**: `fetch` with `redirect: "manual"` returns the 302 response. Connection refused rejects with `code: "ConnectionRefused"` in both 1.3.13 and 1.4.2, but the error class differs: a plain `Error` in 1.3.13 and a `TypeError` in 1.4.2. Tests therefore check `code`, not the class. (Node.js instead throws a `TypeError` with `cause.code === "ECONNREFUSED"`.)
+- **Bun**: `fetch` with `redirect: "manual"` returns the 302 response. Connection refused changed across versions:
+
+  | Bun | Error class | `code` |
+  |-----|-------------|--------|
+  | 1.3.13 | `Error` | `"ConnectionRefused"` |
+  | 1.4.2 | `TypeError` | `"ConnectionRefused"` |
+  | 1.4.4 | `TypeError` | `"ECONNREFUSED"` (Node.js-style) |
+
+  Tests therefore accept either code and do not check the class. (Node.js throws a `TypeError` with `cause.code === "ECONNREFUSED"`.)
 - **httpx2 2.13**: same API as `httpx`; redirects are not followed by default, but the implementation passes `follow_redirects=False` explicitly.
