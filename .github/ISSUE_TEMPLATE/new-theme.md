@@ -24,6 +24,11 @@ labels: theme
 |------|-------|----------|
 |      |       |          |
 
+### Replaces legacy theme (optional)
+
+<!-- Only when this theme rebuilds a legacy theme. Name the legacy theme and list
+     which rows/points of its Language Comparison table to carry over. Delete otherwise. -->
+
 ### Handoff prompt
 
 <!-- Prompt for the coding agent (Japanese is fine) -->
