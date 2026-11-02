@@ -80,8 +80,29 @@ Standard targets per theme:
 
 ## Legacy themes
 
-Themes created before this workflow keep `spec.md`, `shared/fixtures/`, `shared/expected/`,
-and per-language READMEs with status front matter. Do not migrate them.
+Themes created before this workflow have no `cases.json`. Instead they use `spec.md`,
+`shared/fixtures/` + `shared/expected/`, and per-language READMEs with status front matter
+(some also have `language-comparison.md`).
+
+### Policy: migrate on revisit
+
+A legacy theme stays as-is until it is revisited; it is then rebuilt in the current format in that PR.
+A pure file-layout migration adds little learning value, so do not migrate a theme only to change its layout.
+
+- **Trigger** — any of:
+  - the theme is extended
+  - its comparison points are reworked
+  - a new theme builds on it
+  - a language is added
+- **What migration means** — rebuild it as a current-format theme (README with Task + Language Comparison,
+  `cases.json`, function + tests). Remove `spec.md`, per-language READMEs, `language-comparison.md`,
+  and the theme's files under `shared/fixtures/` and `shared/expected/`.
+- **Rename allowed** — when the scope changes, the rebuilt theme may get a new name
+  (e.g. `datetime-basic` → `datetime-tz`). Remove the old directory in the same PR.
+- **Cleanup** — when `shared/` becomes empty, delete it. Do the same for legacy-only files under `docs/`.
+
+Use the "Replaces legacy theme" section of the new-theme issue template, and follow the normal
+one-PR workflow above. Update the Themes table in the root `README.md` (format `legacy` → `current`).
 
 ## Issue templates
 

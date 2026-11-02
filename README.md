@@ -34,8 +34,26 @@ multi-lang-lab/
       Makefile
       {language}/        ← implementation + tests
 
-  docs/, shared/         ← used by legacy themes only
+  docs/, shared/         ← legacy themes only; removed once all are migrated
 ```
+
+## Themes
+
+| Theme | Format | Summary |
+|-------|--------|---------|
+| [csv-sum-avg](themes/csv-sum-avg/) | legacy | Per-row SUM/AVG over a numeric CSV |
+| [datetime-basic](themes/datetime-basic/) | legacy | Date parsing, diff, and formatting via an interactive CLI |
+| [hello-name](themes/hello-name/) | legacy | Greet a name given as a CLI argument |
+| [hello-world](themes/hello-world/) | legacy | Print "Hello, world!" |
+| [http-get](themes/http-get/) | current | Synchronous HTTP GET returning the status code |
+| [n-queens](themes/n-queens/) | legacy | Backtracking N-Queens solver |
+| [recursive-descent-parser](themes/recursive-descent-parser/) | legacy | Parse and evaluate arithmetic expressions |
+| [reverse-string](themes/reverse-string/) | legacy | Grapheme-aware Unicode string reversal |
+| [subprocess-basic](themes/subprocess-basic/) | legacy | Run `ls -l` and reformat its output as a sorted table |
+| [word-count](themes/word-count/) | legacy | Line/word/char counts and top-10 words |
+
+Format: `current` themes have `cases.json`; `legacy` themes do not.
+Legacy themes are migrated on revisit — see "Legacy themes" in [theme-ops](.claude/skills/theme-ops.md).
 
 ## How to Implement
 1. **Sketch** - explore the idea in Python or Rust under `sketches/`
