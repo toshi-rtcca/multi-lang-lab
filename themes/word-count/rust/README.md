@@ -14,16 +14,14 @@ UTF-8 テキストファイルの行数、単語数、文字数をカウント�
 word_count --input <file_path>
 ```
 
-## Run (Docker)
+## Run
 
 ```bash
-docker build -t word-count-rust .
-docker run --rm -v $(pwd)/../../shared:/shared word-count-rust --input /shared/fixtures/word-count.txt
+cargo run -- --input ../../../shared/fixtures/word-count.txt
 ```
 
-## Test (Docker)
+## Test
 
 ```bash
-docker build -t word-count-rust .
-docker run --rm --entrypoint cargo word-count-rust test
+cargo test
 ```

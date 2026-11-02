@@ -2,9 +2,8 @@ package main
 
 import "testing"
 
-// Mirrors shared/fixtures(/expected)/recursive-descent-parser/*.txt: Go tests
-// run in a Docker container without access to the repo's shared/ directory,
-// so the same cases are inlined here instead of read from disk.
+// Mirrors shared/fixtures(/expected)/recursive-descent-parser/*.txt; the same
+// cases are inlined here instead of read from disk.
 func TestParseAndEvaluateSharedFixtures(t *testing.T) {
 	cases := []struct {
 		name       string

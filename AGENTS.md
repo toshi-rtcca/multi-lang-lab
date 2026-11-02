@@ -22,7 +22,7 @@ Implementations prioritize clarity of learning points over production efficiency
 - Implement each theme as a function plus tests; a CLI is optional (only when I/O itself is the learning point)
 - Legacy themes (no `cases.json`) stay as-is until revisited, then are rebuilt in the current format in that PR — see "Legacy themes" in `.claude/skills/theme-ops.md`
 - Never translate Python idioms literally — ask "how would a native X developer write this?"
-- Docker for Go/Rust/Java; local for Python/TypeScript
+- All languages run locally via mise (`mise.toml`). Docker is reserved for future languages with heavy setup.
 
 ## Available skills
 
