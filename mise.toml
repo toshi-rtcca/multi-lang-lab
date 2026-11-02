@@ -1,0 +1,11 @@
+# Single source of truth for language toolchain versions.
+# Pinning policy: minor for Python/Go/Rust, exact for Bun
+# (Bun patch releases have changed observable behavior, see #36).
+[tools]
+python = "3.14"
+bun    = "1.4.4"   # exact: patch versions changed behavior (#36)
+go     = "1.24"
+rust   = "1.87"
+
+[env]
+GOTOOLCHAIN = "local"   # use mise's go; never auto-download a toolchain
