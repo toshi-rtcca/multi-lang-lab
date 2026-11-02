@@ -12,6 +12,6 @@
     "dayjs": "^1.11.13"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "1.4.4"
   }
 }
