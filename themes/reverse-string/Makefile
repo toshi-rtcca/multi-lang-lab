@@ -1,3 +1,7 @@
+.PHONY: test py-test ts-test go-test rs-test
+
+test: py-test ts-test go-test rs-test
+
 py-run:
 	cd python && uv run reverse_string $(INPUT)
 
@@ -11,13 +15,13 @@ ts-test:
 	cd typescript && bun test
 
 go-run:
-	cd go && docker build -t reverse-string-go . && docker run --rm reverse-string-go $(INPUT)
+	cd go && go run . $(INPUT)
 
 go-test:
-	cd go && docker build -t reverse-string-go . && docker run --rm --entrypoint go reverse-string-go test -v
+	cd go && go test -v ./...
 
 rs-run:
-	cd rust && docker build -t reverse-string-rust . && docker run --rm reverse-string-rust $(INPUT)
+	cd rust && cargo run -- $(INPUT)
 
 rs-test:
-	cd rust && docker build -t reverse-string-rust . && docker run --rm --entrypoint cargo reverse-string-rust test
+	cd rust && cargo test

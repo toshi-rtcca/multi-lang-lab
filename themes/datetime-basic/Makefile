@@ -1,3 +1,7 @@
+.PHONY: test py-test ts-test go-test rs-test
+
+test: py-test ts-test go-test rs-test
+
 py-run:
 	cd python && uv run datetime_basic --input-date 2024-01-15
 
@@ -11,13 +15,13 @@ ts-test:
 	cd typescript && bun test
 
 go-run:
-	cd go && docker build -t datetime-basic-go . && docker run --rm datetime-basic-go --input-date 2024-01-15
+	cd go && go run . --input-date 2024-01-15
 
 go-test:
-	cd go && docker build -t datetime-basic-go . && docker run --rm --entrypoint go datetime-basic-go test -v
+	cd go && go test -v ./...
 
 rs-run:
-	cd rust && docker build -t datetime-basic-rust . && docker run --rm datetime-basic-rust --input-date 2024-01-15
+	cd rust && cargo run -- --input-date 2024-01-15
 
 rs-test:
-	cd rust && docker build -t datetime-basic-rust . && docker run --rm --entrypoint cargo datetime-basic-rust test
+	cd rust && cargo test

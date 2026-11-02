@@ -1,3 +1,7 @@
+.PHONY: test py-test ts-test go-test rs-test
+
+test: py-test ts-test go-test rs-test
+
 py-run:
 	cd python && uv run hello_name $(if $(NAME),--name=$(NAME),)
 
@@ -11,13 +15,13 @@ ts-test:
 	cd typescript && bun test
 
 go-run:
-	cd go && docker build -t hello-name-go . && docker run --rm hello-name-go $(if $(NAME),--name=$(NAME),)
+	cd go && go run . $(if $(NAME),--name=$(NAME),)
 
 go-test:
-	cd go && docker build -t hello-name-go . && docker run --rm hello-name-go go test -v
+	cd go && go test -v ./...
 
 rs-run:
-	cd rust && docker build -t hello-name-rust . && docker run --rm hello-name-rust $(if $(NAME),--name=$(NAME),)
+	cd rust && cargo run -- $(if $(NAME),--name=$(NAME),)
 
 rs-test:
-	cd rust && docker build -t hello-name-rust . && docker run --rm hello-name-rust cargo test
+	cd rust && cargo test

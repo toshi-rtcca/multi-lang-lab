@@ -1,3 +1,7 @@
+.PHONY: test py-test ts-test go-test rs-test
+
+test: py-test ts-test go-test rs-test
+
 py-run:
 	cd python && uv run recursive-descent-parser "1 + 2 * (3 - 4)"
 
@@ -11,13 +15,13 @@ ts-test:
 	cd typescript && bun test
 
 go-run:
-	cd go && docker build -t recursive-descent-parser-go . && docker run --rm recursive-descent-parser-go "1 + 2 * (3 - 4)"
+	cd go && go run . "1 + 2 * (3 - 4)"
 
 go-test:
-	cd go && docker build -t recursive-descent-parser-go . && docker run --rm --entrypoint go recursive-descent-parser-go test -v
+	cd go && go test -v ./...
 
 rs-run:
-	cd rust && docker build -t recursive-descent-parser-rust . && docker run --rm recursive-descent-parser-rust "1 + 2 * (3 - 4)"
+	cd rust && cargo run -- "1 + 2 * (3 - 4)"
 
 rs-test:
-	cd rust && docker build -t recursive-descent-parser-rust . && docker run --rm --entrypoint cargo recursive-descent-parser-rust test
+	cd rust && cargo test

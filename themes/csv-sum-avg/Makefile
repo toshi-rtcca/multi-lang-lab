@@ -1,3 +1,7 @@
+.PHONY: test py-test ts-test go-test rs-test
+
+test: py-test ts-test go-test rs-test
+
 py-run:
 	cd python && uv run csv_sum_avg --input-csv ../../../shared/fixtures/csv-sum-avg.csv --output-csv /tmp/csv-sum-avg-output.csv && cat /tmp/csv-sum-avg-output.csv
 
@@ -11,13 +15,13 @@ ts-test:
 	cd typescript && bun test
 
 go-run:
-	cd go && docker build -t csv-sum-avg-go . && docker run --rm -v $(CURDIR)/../../shared:/shared -v /tmp:/tmp csv-sum-avg-go --input-csv /shared/fixtures/csv-sum-avg.csv --output-csv /tmp/csv-sum-avg-output.csv && cat /tmp/csv-sum-avg-output.csv
+	cd go && go run . --input-csv ../../../shared/fixtures/csv-sum-avg.csv --output-csv /tmp/csv-sum-avg-output.csv && cat /tmp/csv-sum-avg-output.csv
 
 go-test:
-	cd go && docker build -t csv-sum-avg-go . && docker run --rm --entrypoint go csv-sum-avg-go test -v
+	cd go && go test -v ./...
 
 rs-run:
-	cd rust && docker build -t csv-sum-avg-rust . && docker run --rm -v $(CURDIR)/../../shared:/shared -v /tmp:/tmp csv-sum-avg-rust --input-csv /shared/fixtures/csv-sum-avg.csv --output-csv /tmp/csv-sum-avg-output.csv && cat /tmp/csv-sum-avg-output.csv
+	cd rust && cargo run -- --input-csv ../../../shared/fixtures/csv-sum-avg.csv --output-csv /tmp/csv-sum-avg-output.csv && cat /tmp/csv-sum-avg-output.csv
 
 rs-test:
-	cd rust && docker build -t csv-sum-avg-rust . && docker run --rm --entrypoint cargo csv-sum-avg-rust test
+	cd rust && cargo test

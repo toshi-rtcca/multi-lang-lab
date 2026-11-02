@@ -1,3 +1,7 @@
+.PHONY: test py-test ts-test go-test rs-test
+
+test: py-test ts-test go-test rs-test
+
 py-run:
 	cd python && uv run hello_world
 
@@ -11,13 +15,13 @@ ts-test:
 	cd typescript && bun test
 
 go-run:
-	cd go && docker build -t hello-world-go . && docker run --rm hello-world-go
+	cd go && go run .
 
 go-test:
-	cd go && docker build -t hello-world-go . && docker run --rm hello-world-go go test -v
+	cd go && go test -v ./...
 
 rs-run:
-	cd rust && docker build -t hello-world-rust . && docker run --rm hello-world-rust
+	cd rust && cargo run
 
 rs-test:
-	cd rust && docker build -t hello-world-rust . && docker run --rm hello-world-rust cargo test
+	cd rust && cargo test
