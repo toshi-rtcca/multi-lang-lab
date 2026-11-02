@@ -1,3 +1,7 @@
+.PHONY: test py-test ts-test go-test rs-test
+
+test: py-test ts-test go-test rs-test
+
 py-run:
 	cd python && uv run word_count --input ../../../shared/fixtures/word-count.txt
 
@@ -11,13 +15,13 @@ ts-test:
 	cd typescript && bun test
 
 go-run:
-	cd go && docker build -t word-count-go . && docker run --rm -v $(CURDIR)/../../shared:/shared word-count-go --input /shared/fixtures/word-count.txt
+	cd go && go run . --input ../../../shared/fixtures/word-count.txt
 
 go-test:
-	cd go && docker build -t word-count-go . && docker run --rm --entrypoint go word-count-go test -v
+	cd go && go test -v ./...
 
 rs-run:
-	cd rust && docker build -t word-count-rust . && docker run --rm -v $(CURDIR)/../../shared:/shared word-count-rust --input /shared/fixtures/word-count.txt
+	cd rust && cargo run -- --input ../../../shared/fixtures/word-count.txt
 
 rs-test:
-	cd rust && docker build -t word-count-rust . && docker run --rm --entrypoint cargo word-count-rust test
+	cd rust && cargo test

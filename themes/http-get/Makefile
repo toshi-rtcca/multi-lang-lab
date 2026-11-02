@@ -8,9 +8,8 @@ py-test:
 ts-test:
 	cd typescript && bun test
 
-# Go and Rust build from the theme root so the image can include cases.json.
 go-test:
-	docker build -t http-get-go -f go/Dockerfile . && docker run --rm http-get-go
+	cd go && go test -v ./...
 
 rs-test:
-	docker build -t http-get-rust -f rust/Dockerfile . && docker run --rm http-get-rust
+	cd rust && cargo test

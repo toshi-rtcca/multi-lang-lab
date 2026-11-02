@@ -12,6 +12,23 @@ Use coding agents to learn multiple programming languages simultaneously.
 - Go
 - Rust
 
+## Setup
+Language toolchains (Python, Bun, Go, Rust) are pinned in [`mise.toml`](mise.toml).
+
+1. Install [mise](https://mise.jdx.dev/getting-started.html) and [uv](https://docs.astral.sh/uv/getting-started/installation/)
+2. Install the pinned toolchains from the repo root:
+   ```bash
+   mise trust
+   mise install
+   ```
+3. Run every language's tests in a theme (mise activates the toolchains when
+   [shell activation](https://mise.jdx.dev/getting-started.html#activate-mise) is set up;
+   otherwise prefix commands with `mise exec --`):
+   ```bash
+   cd themes/http-get
+   make test
+   ```
+
 ## Policy
 The purpose is to learn through implementing the same topic in multiple languages and comparing their design philosophies.
 
@@ -23,6 +40,7 @@ multi-lang-lab/
   README.md              ← this file
   AGENTS.md              ← guidance for coding agents
   CLAUDE.md              ← same as AGENTS.md
+  mise.toml              ← pinned language toolchain versions
 
   sketches/
     {yyyymmdd}-{topic}/  ← quick single-language experiments

@@ -6,6 +6,4 @@ status: done
 
 ## Setup
 
-```bash
-docker build -t csv-sum-avg-rust .
-```
+The toolchain version is pinned in the repo-root `mise.toml`. Run `mise install` once.

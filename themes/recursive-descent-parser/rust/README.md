@@ -1,23 +1,21 @@
 ---
 language: rust
-version: "docker"
+version: "1.87"
 status: done
 ---
 
 ## Setup
 
-```bash
-docker build -t recursive-descent-parser-rust .
-```
+The toolchain version is pinned in the repo-root `mise.toml`. Run `mise install` once.
 
 ## Run
 
 ```bash
-docker run --rm recursive-descent-parser-rust "1 + 2 * (3 - 4)"
+cargo run -- "1 + 2 * (3 - 4)"
 ```
 
 ## Test
 
 ```bash
-docker run --rm --entrypoint cargo recursive-descent-parser-rust test
+cargo test
 ```

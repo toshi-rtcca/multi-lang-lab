@@ -8,16 +8,14 @@ status: done
 
 Reverse a string at the grapheme cluster level using `unicode-segmentation`.
 
-## Run (Docker)
+## Run
 
 ```bash
-docker build -t reverse-string-rust .
-docker run --rm reverse-string-rust "asdf"
+cargo run -- "asdf"
 ```
 
-## Test (Docker)
+## Test
 
 ```bash
-docker build -t reverse-string-rust .
-docker run --rm reverse-string-rust cargo test
+cargo test
 ```

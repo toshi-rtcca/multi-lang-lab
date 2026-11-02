@@ -75,8 +75,17 @@ Standard targets per theme:
 |------------|-------------------------|---------------|
 | Python     | uv                      | python        |
 | TypeScript | bun                     | bun           |
-| Go         | go modules              | go (Docker)   |
-| Rust       | cargo                   | cargo (Docker)|
+| Go         | go modules              | go            |
+| Rust       | cargo                   | cargo         |
+
+Toolchain versions are pinned in the repo-root `mise.toml`, the single source of truth
+(keep `requires-python` and the `go` line in `go.mod` consistent with it):
+
+- **Minor** for Python, Go, and Rust (e.g. `go = "1.24"`); mise resolves the latest patch.
+- **Exact** for Bun (e.g. `bun = "1.4.4"`), because Bun patch releases have changed
+  observable behavior. Pin `@types/bun` to the same exact version.
+- `GOTOOLCHAIN=local` stops Go from auto-downloading another toolchain.
+- Do not add `rust-toolchain.toml` or a `toolchain` line in `go.mod`.
 
 ## Legacy themes
 

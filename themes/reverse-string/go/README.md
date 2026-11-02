@@ -8,16 +8,14 @@ status: done
 
 Reverse a string at the grapheme cluster level using `github.com/rivo/uniseg`.
 
-## Run (Docker)
+## Run
 
 ```bash
-docker build -t reverse-string-go .
-docker run --rm reverse-string-go "asdf"
+go run . "asdf"
 ```
 
-## Test (Docker)
+## Test
 
 ```bash
-docker build -t reverse-string-go .
-docker run --rm reverse-string-go go test -v
+go test -v ./...
 ```

@@ -1,23 +1,21 @@
 ---
 language: go
-version: "docker"
+version: "1.24"
 status: done
 ---
 
 ## Setup
 
-```bash
-docker build -t n-queens-go .
-```
+The toolchain version is pinned in the repo-root `mise.toml`. Run `mise install` once.
 
 ## Run
 
 ```bash
-docker run --rm n-queens-go --n 8
+go run . --n 8
 ```
 
 ## Test
 
 ```bash
-docker run --rm --entrypoint go n-queens-go test -v
+go test -v ./...
 ```

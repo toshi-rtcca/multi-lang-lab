@@ -1,23 +1,21 @@
 ---
 language: rust
-version: "docker"
+version: "1.87"
 status: done
 ---
 
 ## Setup
 
-```bash
-docker build -t n-queens-rust .
-```
+The toolchain version is pinned in the repo-root `mise.toml`. Run `mise install` once.
 
 ## Run
 
 ```bash
-docker run --rm n-queens-rust --n 8
+cargo run -- --n 8
 ```
 
 ## Test
 
 ```bash
-docker run --rm --entrypoint cargo n-queens-rust test
+cargo test
 ```

@@ -1,23 +1,21 @@
 ---
 language: rust
-version: "docker"
+version: "1.87"
 status: done
 ---
 
 ## Setup
 
-```bash
-docker build -t subprocess-basic-rust .
-```
+The toolchain version is pinned in the repo-root `mise.toml`. Run `mise install` once.
 
 ## Run
 
 ```bash
-docker run --rm -v $(pwd)/../../../shared:/shared subprocess-basic-rust --path /shared/fixtures/subprocess-basic
+cargo run -- --path ../../../shared/fixtures/subprocess-basic
 ```
 
 ## Test
 
 ```bash
-docker run --rm --entrypoint cargo subprocess-basic-rust test
+cargo test
 ```
