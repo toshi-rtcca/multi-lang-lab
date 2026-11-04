@@ -45,13 +45,13 @@ make py-test   # or ts-test / go-test / rs-test, or `make test` for all
 
 | Aspect | Python | TypeScript | Go | Rust |
 |--------|--------|------------|-----|------|
-| Representation | Nested `list[list[int]]` | Nested `number[][]` (`number` is float64; no integer type) | | |
-| Where the shape is validated | Every operation calls `shape()` | Every operation calls `shape()` | | |
-| Error model | `ValueError` subclasses (`RaggedMatrixError`, …) + builtin `IndexError` | One `MatrixError` class with `kind: "ragged" \| …` (string-literal union) | | |
-| Plain out-of-range access | `IndexError` | `undefined` (a missing row then throws `TypeError` on `[j]`) | | |
-| Negative index | Wraps around (`m[-1]` is the last row), so `get()` checks bounds explicitly | `m[-1]` is `undefined` (no wrap-around); `.at(-1)` wraps | | |
-| 2D initialization pitfall | `[[0] * c] * r` repeats one row object; use a comprehension | `Array(r).fill(Array(c).fill(0))` puts one row in every slot; use `Array.from` | | |
-| Copying input rows | `[list(r) for r in rows]` | `rows.map((row) => [...row])` | | |
-| Transpose idiom | `[list(col) for col in zip(*m)]` (`zip` truncates ragged input silently) | `m[0].map((_, j) => m.map((row) => row[j]))` | | |
-| Matmul idiom | Comprehension over `transpose(b)` + `sum(x * y for x, y in zip(row, col, strict=True))` | `a.map(row => bCols.map(col => row.reduce((s, x, k) => s + x * col[k], 0)))` | | |
-| Reading `cases.json` | `json` + `pathlib`, dispatch with `match case["op"]` | `import cases from "../../cases.json"`, `switch (c.op)` | | |
+| Representation | Nested `list[list[int]]` | Nested `number[][]` (`number` is float64; no integer type) | Flat row-major `struct { rows, cols int; data []int }`, element at `data[i*cols+j]` | |
+| Where the shape is validated | Every operation calls `shape()` | Every operation calls `shape()` | Once, in `Zeros` / `FromRows`; unexported fields keep it valid. Hole: the zero value `Matrix{}` (0x0) | |
+| Error model | `ValueError` subclasses (`RaggedMatrixError`, …) + builtin `IndexError` | One `MatrixError` class with `kind: "ragged" \| …` (string-literal union) | Sentinel errors (`ErrRagged`, …) wrapped with `%w`, matched with `errors.Is`; `Transpose` / `Shape` return no error | |
+| Plain out-of-range access | `IndexError` | `undefined` (a missing row then throws `TypeError` on `[j]`) | Runtime panic (`index out of range`); `At` returns `ErrOutOfRange` instead | |
+| Negative index | Wraps around (`m[-1]` is the last row), so `get()` checks bounds explicitly | `m[-1]` is `undefined` (no wrap-around); `.at(-1)` wraps | `int` is signed, so negative indices are representable and `At` checks them | |
+| 2D initialization pitfall | `[[0] * c] * r` repeats one row object; use a comprehension | `Array(r).fill(Array(c).fill(0))` puts one row in every slot; use `Array.from` | None with one `make([]int, r*c)`; but a sub-slice `data[i*c:(i+1)*c]` aliases the backing array, so `Rows()` copies | |
+| Copying input rows | `[list(r) for r in rows]` | `rows.map((row) => [...row])` | `append(data, row...)` into the flat slice | |
+| Transpose idiom | `[list(col) for col in zip(*m)]` (`zip` truncates ragged input silently) | `m[0].map((_, j) => m.map((row) => row[j]))` | Nested index loops: `t.data[j*t.cols+i] = m.data[i*m.cols+j]` | |
+| Matmul idiom | Comprehension over `transpose(b)` + `sum(x * y for x, y in zip(row, col, strict=True))` | `a.map(row => bCols.map(col => row.reduce((s, x, k) => s + x * col[k], 0)))` | Triple loop in i-k-j order (walks `b` and `c` contiguously); `Mul(a, b)` since Go has no operator overloading | |
+| Reading `cases.json` | `json` + `pathlib`, dispatch with `match case["op"]` | `import cases from "../../cases.json"`, `switch (c.op)` | `encoding/json` into a tagged struct; `expected` kept as `json.RawMessage` and decoded via `reflect` to the result's type | |
