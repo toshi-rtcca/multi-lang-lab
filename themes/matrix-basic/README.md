@@ -43,4 +43,15 @@ make py-test   # or ts-test / go-test / rs-test, or `make test` for all
 
 ## Language Comparison
 
-<!-- Filled in per language. -->
+| Aspect | Python | TypeScript | Go | Rust |
+|--------|--------|------------|-----|------|
+| Representation | Nested `list[list[int]]` | | | |
+| Where the shape is validated | Every operation calls `shape()` | | | |
+| Error model | `ValueError` subclasses (`RaggedMatrixError`, …) + builtin `IndexError` | | | |
+| Plain out-of-range access | `IndexError` | | | |
+| Negative index | Wraps around (`m[-1]` is the last row), so `get()` checks bounds explicitly | | | |
+| 2D initialization pitfall | `[[0] * c] * r` repeats one row object; use a comprehension | | | |
+| Copying input rows | `[list(r) for r in rows]` | | | |
+| Transpose idiom | `[list(col) for col in zip(*m)]` (`zip` truncates ragged input silently) | | | |
+| Matmul idiom | Comprehension over `transpose(b)` + `sum(x * y for x, y in zip(row, col, strict=True))` | | | |
+| Reading `cases.json` | `json` + `pathlib`, dispatch with `match case["op"]` | | | |
