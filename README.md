@@ -64,6 +64,7 @@ multi-lang-lab/
 | [hello-name](themes/hello-name/) | legacy | Greet a name given as a CLI argument |
 | [hello-world](themes/hello-world/) | legacy | Print "Hello, world!" |
 | [http-get](themes/http-get/) | current | Synchronous HTTP GET returning the status code |
+| [matrix-basic](themes/matrix-basic/) | current | Integer matrix construction, indexing, transpose, and multiplication |
 | [n-queens](themes/n-queens/) | legacy | Backtracking N-Queens solver |
 | [recursive-descent-parser](themes/recursive-descent-parser/) | legacy | Parse and evaluate arithmetic expressions |
 | [reverse-string](themes/reverse-string/) | legacy | Grapheme-aware Unicode string reversal |
