@@ -45,13 +45,13 @@ make py-test   # or ts-test / go-test / rs-test, or `make test` for all
 
 | Aspect | Python | TypeScript | Go | Rust |
 |--------|--------|------------|-----|------|
-| Representation | Nested `list[list[int]]` | | | |
-| Where the shape is validated | Every operation calls `shape()` | | | |
-| Error model | `ValueError` subclasses (`RaggedMatrixError`, …) + builtin `IndexError` | | | |
-| Plain out-of-range access | `IndexError` | | | |
-| Negative index | Wraps around (`m[-1]` is the last row), so `get()` checks bounds explicitly | | | |
-| 2D initialization pitfall | `[[0] * c] * r` repeats one row object; use a comprehension | | | |
-| Copying input rows | `[list(r) for r in rows]` | | | |
-| Transpose idiom | `[list(col) for col in zip(*m)]` (`zip` truncates ragged input silently) | | | |
-| Matmul idiom | Comprehension over `transpose(b)` + `sum(x * y for x, y in zip(row, col, strict=True))` | | | |
-| Reading `cases.json` | `json` + `pathlib`, dispatch with `match case["op"]` | | | |
+| Representation | Nested `list[list[int]]` | Nested `number[][]` (`number` is float64; no integer type) | | |
+| Where the shape is validated | Every operation calls `shape()` | Every operation calls `shape()` | | |
+| Error model | `ValueError` subclasses (`RaggedMatrixError`, …) + builtin `IndexError` | One `MatrixError` class with `kind: "ragged" \| …` (string-literal union) | | |
+| Plain out-of-range access | `IndexError` | `undefined` (a missing row then throws `TypeError` on `[j]`) | | |
+| Negative index | Wraps around (`m[-1]` is the last row), so `get()` checks bounds explicitly | `m[-1]` is `undefined` (no wrap-around); `.at(-1)` wraps | | |
+| 2D initialization pitfall | `[[0] * c] * r` repeats one row object; use a comprehension | `Array(r).fill(Array(c).fill(0))` puts one row in every slot; use `Array.from` | | |
+| Copying input rows | `[list(r) for r in rows]` | `rows.map((row) => [...row])` | | |
+| Transpose idiom | `[list(col) for col in zip(*m)]` (`zip` truncates ragged input silently) | `m[0].map((_, j) => m.map((row) => row[j]))` | | |
+| Matmul idiom | Comprehension over `transpose(b)` + `sum(x * y for x, y in zip(row, col, strict=True))` | `a.map(row => bCols.map(col => row.reduce((s, x, k) => s + x * col[k], 0)))` | | |
+| Reading `cases.json` | `json` + `pathlib`, dispatch with `match case["op"]` | `import cases from "../../cases.json"`, `switch (c.op)` | | |
