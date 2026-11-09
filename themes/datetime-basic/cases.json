@@ -1,0 +1,191 @@
+[
+  {
+    "name": "basic",
+    "input": "2024-01-15",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected": {
+      "now_local": "2026-11-06 05:52:00.123456",
+      "now_utc": "2026-11-05T20:52:00.123456Z",
+      "unix": 1793911920,
+      "input": "2024-01-15",
+      "weekday": "Monday",
+      "days_diff": -1026,
+      "plus_30d": "2024-02-14",
+      "is_leap": true
+    }
+  },
+  {
+    "name": "leap-day",
+    "input": "2024-02-29",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected": {
+      "now_local": "2026-11-06 05:52:00.123456",
+      "now_utc": "2026-11-05T20:52:00.123456Z",
+      "unix": 1793911920,
+      "input": "2024-02-29",
+      "weekday": "Thursday",
+      "days_diff": -981,
+      "plus_30d": "2024-03-30",
+      "is_leap": true
+    }
+  },
+  {
+    "name": "today-by-offset",
+    "input": "2026-11-06",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected": {
+      "now_local": "2026-11-06 05:52:00.123456",
+      "now_utc": "2026-11-05T20:52:00.123456Z",
+      "unix": 1793911920,
+      "input": "2026-11-06",
+      "weekday": "Friday",
+      "days_diff": 0,
+      "plus_30d": "2026-12-06",
+      "is_leap": false
+    }
+  },
+  {
+    "name": "yesterday",
+    "input": "2026-11-05",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected": {
+      "now_local": "2026-11-06 05:52:00.123456",
+      "now_utc": "2026-11-05T20:52:00.123456Z",
+      "unix": 1793911920,
+      "input": "2026-11-05",
+      "weekday": "Thursday",
+      "days_diff": -1,
+      "plus_30d": "2026-12-05",
+      "is_leap": false
+    }
+  },
+  {
+    "name": "future",
+    "input": "2027-01-01",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected": {
+      "now_local": "2026-11-06 05:52:00.123456",
+      "now_utc": "2026-11-05T20:52:00.123456Z",
+      "unix": 1793911920,
+      "input": "2027-01-01",
+      "weekday": "Friday",
+      "days_diff": 56,
+      "plus_30d": "2027-01-31",
+      "is_leap": false
+    }
+  },
+  {
+    "name": "plus-30d-crosses-year",
+    "input": "2026-12-15",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected": {
+      "now_local": "2026-11-06 05:52:00.123456",
+      "now_utc": "2026-11-05T20:52:00.123456Z",
+      "unix": 1793911920,
+      "input": "2026-12-15",
+      "weekday": "Tuesday",
+      "days_diff": 39,
+      "plus_30d": "2027-01-14",
+      "is_leap": false
+    }
+  },
+  {
+    "name": "century-not-leap",
+    "input": "1900-03-01",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected": {
+      "now_local": "2026-11-06 05:52:00.123456",
+      "now_utc": "2026-11-05T20:52:00.123456Z",
+      "unix": 1793911920,
+      "input": "1900-03-01",
+      "weekday": "Thursday",
+      "days_diff": -46271,
+      "plus_30d": "1900-03-31",
+      "is_leap": false
+    }
+  },
+  {
+    "name": "century-400-leap",
+    "input": "2000-03-01",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected": {
+      "now_local": "2026-11-06 05:52:00.123456",
+      "now_utc": "2026-11-05T20:52:00.123456Z",
+      "unix": 1793911920,
+      "input": "2000-03-01",
+      "weekday": "Wednesday",
+      "days_diff": -9746,
+      "plus_30d": "2000-03-31",
+      "is_leap": true
+    }
+  },
+  {
+    "name": "negative-offset",
+    "input": "2026-11-06",
+    "now": "2026-11-05T19:00:00-05:00",
+    "expected": {
+      "now_local": "2026-11-05 19:00:00.000000",
+      "now_utc": "2026-11-06T00:00:00.000000Z",
+      "unix": 1793923200,
+      "input": "2026-11-06",
+      "weekday": "Friday",
+      "days_diff": 1,
+      "plus_30d": "2026-12-06",
+      "is_leap": false
+    }
+  },
+  {
+    "name": "invalid-unpadded",
+    "input": "2024-1-5",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected_error": "invalid-date"
+  },
+  {
+    "name": "invalid-day-out-of-range",
+    "input": "2024-02-30",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected_error": "invalid-date"
+  },
+  {
+    "name": "invalid-non-leap-feb-29",
+    "input": "2023-02-29",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected_error": "invalid-date"
+  },
+  {
+    "name": "invalid-month",
+    "input": "2024-13-01",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected_error": "invalid-date"
+  },
+  {
+    "name": "invalid-basic-format",
+    "input": "20240115",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected_error": "invalid-date"
+  },
+  {
+    "name": "invalid-signed-year",
+    "input": "+2024-01-15",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected_error": "invalid-date"
+  },
+  {
+    "name": "invalid-trailing-space",
+    "input": "2024-01-15 ",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected_error": "invalid-date"
+  },
+  {
+    "name": "invalid-text",
+    "input": "invalid",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected_error": "invalid-date"
+  },
+  {
+    "name": "invalid-empty",
+    "input": "",
+    "now": "2026-11-06T05:52:00.123456+09:00",
+    "expected_error": "invalid-date"
+  }
+]

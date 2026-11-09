@@ -60,7 +60,7 @@ multi-lang-lab/
 | Theme | Format | Summary |
 |-------|--------|---------|
 | [csv-sum-avg](themes/csv-sum-avg/) | legacy | Per-row SUM/AVG over a numeric CSV |
-| [datetime-basic](themes/datetime-basic/) | legacy | Date parsing, diff, and formatting via an interactive CLI |
+| [datetime-basic](themes/datetime-basic/) | current | Strict date parsing, offset-aware injected `now`, UTC/RFC 3339 output, date arithmetic, leap years |
 | [hello-name](themes/hello-name/) | legacy | Greet a name given as a CLI argument |
 | [hello-world](themes/hello-world/) | legacy | Print "Hello, world!" |
 | [http-get](themes/http-get/) | current | Synchronous HTTP GET returning the status code |
