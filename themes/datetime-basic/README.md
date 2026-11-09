@@ -62,3 +62,15 @@ TZ=Asia/Tokyo make test
 | Date vs. instant types | `date` / aware `datetime` (same class as naive `datetime`) | `Temporal.PlainDate` / `Temporal.ZonedDateTime` | One type, `time.Time`, for both | `NaiveDate` / `DateTime<FixedOffset>` |
 | Leniency of the standard parser | `strptime("%Y-%m-%d")` accepts `2024-1-5`; `date.fromisoformat` accepts `20240115` (and `2024-W03-1`) | `PlainDate.from` accepts `20240115` and `+002024-01-15`; `2024-02-30` is clamped unless `{ overflow: "reject" }` | `time.Parse(time.DateOnly, …)` rejects every invalid case | `NaiveDate::parse_from_str("%Y-%m-%d")` accepts `2024-1-5` and `+2024-01-15` |
 | Microseconds | 6 digits | 6 digits (Temporal has nanoseconds; the legacy `dayjs` / `Date` had milliseconds only) | 6 digits | 6 digits |
+| Strict parsing | `re.fullmatch(r"\d{4}-\d{2}-\d{2}", s, re.ASCII)`, then `date.fromisoformat` (`\d` alone also matches `２`) | — | — | — |
+| Invalid calendar date | `ValueError` from `fromisoformat` | — | — | — |
+| Error model | Builtin `ValueError` | — | — | — |
+| Wall clock in `now`'s offset | `now.strftime("%Y-%m-%d %H:%M:%S.%f")` (an aware `datetime` keeps its offset) | — | — | — |
+| UTC + RFC 3339 | `now.astimezone(UTC).strftime("…%fZ")`; `isoformat()` gives `+00:00` and drops `.000000` | — | — | — |
+| UNIX seconds | `math.floor(now.timestamp())` (float; `int()` would truncate before 1970) | — | — | — |
+| Local date of `now` | `now.date()` | — | — | — |
+| Day of week | `calendar.day_name[d.weekday()]` (`strftime("%A")` is locale-dependent) | — | — | — |
+| Days between dates | `(d - now.date()).days` | — | — | — |
+| Add days | `d + timedelta(days=30)` | — | — | — |
+| Leap year | `calendar.isleap(year)` | — | — | — |
+| Injecting `now` in tests | `datetime.fromisoformat(case["now"])` (aware); a naive `now` is rejected | — | — | — |
