@@ -60,17 +60,18 @@ TZ=Asia/Tokyo make test
 |--------|--------|------------|-----|------|
 | Library | `datetime` (stdlib) | `Temporal` (global in Bun 1.4.4). The legacy version used `dayjs`, which drops the offset when parsing an ISO string | `time` (stdlib) | `chrono` (crate) |
 | Date vs. instant types | `date` / aware `datetime` (same class as naive `datetime`) | `Temporal.PlainDate` / `Temporal.ZonedDateTime` | One type, `time.Time`, for both | `NaiveDate` / `DateTime<FixedOffset>` |
-| Leniency of the standard parser | `strptime("%Y-%m-%d")` accepts `2024-1-5`; `date.fromisoformat` accepts `20240115` (and `2024-W03-1`) | `PlainDate.from` accepts `20240115` and `+002024-01-15`; `2024-02-30` is clamped unless `{ overflow: "reject" }` | `time.Parse(time.DateOnly, …)` rejects every invalid case | `NaiveDate::parse_from_str("%Y-%m-%d")` accepts `2024-1-5` and `+2024-01-15` |
+| Leniency of the standard parser | `strptime("%Y-%m-%d")` accepts `2024-1-5`; `date.fromisoformat` accepts `20240115` (and `2024-W03-1`) | `PlainDate.from` accepts `20240115`, `+002024-01-15`, `2024-01-15T10:00` and `2024-01-15[u-ca=iso8601]`. It always rejects `2024-02-30` in a string: `overflow` only applies to property bags (`from({ year: 2024, month: 2, day: 30 })` clamps to `2024-02-29` unless `{ overflow: "reject" }`) | `time.Parse(time.DateOnly, …)` rejects every invalid case | `NaiveDate::parse_from_str("%Y-%m-%d")` accepts `2024-1-5` and `+2024-01-15` |
 | Microseconds | 6 digits | 6 digits (Temporal has nanoseconds; the legacy `dayjs` / `Date` had milliseconds only) | 6 digits | 6 digits |
-| Strict parsing | `re.fullmatch(r"\d{4}-\d{2}-\d{2}", s, re.ASCII)`, then `date.fromisoformat` (`\d` alone also matches `２`) | — | — | — |
-| Invalid calendar date | `ValueError` from `fromisoformat` | — | — | — |
-| Error model | Builtin `ValueError` | — | — | — |
-| Wall clock in `now`'s offset | `now.strftime("%Y-%m-%d %H:%M:%S.%f")` (an aware `datetime` keeps its offset) | — | — | — |
-| UTC + RFC 3339 | `now.astimezone(UTC).strftime("…%fZ")`; `isoformat()` gives `+00:00` and drops `.000000` | — | — | — |
-| UNIX seconds | `math.floor(now.timestamp())` (float; `int()` would truncate before 1970) | — | — | — |
-| Local date of `now` | `now.date()` | — | — | — |
-| Day of week | `calendar.day_name[d.weekday()]` (`strftime("%A")` is locale-dependent) | — | — | — |
-| Days between dates | `(d - now.date()).days` | — | — | — |
-| Add days | `d + timedelta(days=30)` | — | — | — |
-| Leap year | `calendar.isleap(year)` | — | — | — |
-| Injecting `now` in tests | `datetime.fromisoformat(case["now"])` (aware); a naive `now` is rejected | — | — | — |
+| Strict parsing | `re.fullmatch(r"\d{4}-\d{2}-\d{2}", s, re.ASCII)`, then `date.fromisoformat` (`\d` alone also matches `２`) | `/^\d{4}-\d{2}-\d{2}$/` (JS `\d` is ASCII-only; `$` without `m` allows no trailing `\n`), then `PlainDate.from` | — | — |
+| Invalid calendar date | `ValueError` from `fromisoformat` | `RangeError` from `PlainDate.from`, wrapped with `cause` | — | — |
+| Error model | Builtin `ValueError` | `class InvalidDateError extends Error` with `kind = "invalid-date"` | — | — |
+| Wall clock in `now`'s offset | `now.strftime("%Y-%m-%d %H:%M:%S.%f")` (an aware `datetime` keeps its offset) | `now.toPlainDateTime().toString({ fractionalSecondDigits: 6 })` with `T` → space | — | — |
+| UTC + RFC 3339 | `now.astimezone(UTC).strftime("…%fZ")`; `isoformat()` gives `+00:00` and drops `.000000` | `now.toInstant().toString({ fractionalSecondDigits: 6 })` (an `Instant` always prints `Z`) | — | — |
+| UNIX seconds | `math.floor(now.timestamp())` (float; `int()` would truncate before 1970) | `Math.floor(now.epochMilliseconds / 1000)` (`epochNanoseconds` is a `bigint`) | — | — |
+| Local date of `now` | `now.date()` | `now.toPlainDate()` | — | — |
+| Day of week | `calendar.day_name[d.weekday()]` (`strftime("%A")` is locale-dependent) | `d.dayOfWeek` (1 = Monday … 7 = Sunday) indexes a name table | — | — |
+| Days between dates | `(d - now.date()).days` | `now.toPlainDate().until(d, { largestUnit: "day" }).days` | — | — |
+| Add days | `d + timedelta(days=30)` | `d.add({ days: 30 })` | — | — |
+| Leap year | `calendar.isleap(year)` | `d.inLeapYear` | — | — |
+| Injecting `now` in tests | `datetime.fromisoformat(case["now"])` (aware); a naive `now` is rejected | `Temporal.ZonedDateTime.from("…+09:00[+09:00]")`: a ZonedDateTime needs a time zone annotation, so tests reuse the offset as one | — | — |
+| Type definitions | Built in | `@types/bun` 1.4.4 has no `Temporal`; TypeScript ≥ 6.0 ships `lib.esnext.temporal`, enabled via `"lib": ["ESNext"]` in `tsconfig.json` (`bun test` itself does not type-check) | — | — |
