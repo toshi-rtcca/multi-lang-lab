@@ -1,13 +1,9 @@
 [project]
 name = "datetime-basic"
 version = "0.1.0"
-description = "Basic datetime operations CLI tool"
-readme = "README.md"
-requires-python = ">=3.14"
+description = "Strict date parsing and offset-aware date arithmetic with the datetime module"
+requires-python = ">=3.12"
 dependencies = []
-
-[project.scripts]
-datetime_basic = "datetime_basic.cli:main"
 
 [build-system]
 requires = ["hatchling"]

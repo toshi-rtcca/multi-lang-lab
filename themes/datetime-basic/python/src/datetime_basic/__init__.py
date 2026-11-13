@@ -1,21 +1,5 @@
-"""datetime_basic - Basic datetime operations CLI tool."""
+"""Strict date parsing and offset-aware date arithmetic."""
 
-from .helpers import (
-    format_datetime,
-    datetime_to_timestamp,
-    parse_date,
-    get_days_diff,
-    get_weekday_name,
-    format_elapsed_seconds,
-    generate_sleep_ms,
-)
+from datetime_basic.dates import Report, describe, is_leap_year, parse_date
 
-__all__ = [
-    "format_datetime",
-    "datetime_to_timestamp",
-    "parse_date",
-    "get_days_diff",
-    "get_weekday_name",
-    "format_elapsed_seconds",
-    "generate_sleep_ms",
-]
+__all__ = ["Report", "describe", "is_leap_year", "parse_date"]

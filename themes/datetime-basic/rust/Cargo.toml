@@ -3,13 +3,10 @@ name = "datetime_basic"
 version = "0.1.0"
 edition = "2024"
 
-[[bin]]
-name = "datetime_basic"
-path = "src/main.rs"
-
 [dependencies]
-chrono = "0.4"
-clap = { version = "4", features = ["derive"] }
-rand = "0.8"
+# Without the default "clock" feature there is no `Local`, so nothing can
+# read the system clock or the machine's time zone by accident.
+chrono = { version = "0.4", default-features = false, features = ["std"] }
 
 [dev-dependencies]
+serde_json = "1"
