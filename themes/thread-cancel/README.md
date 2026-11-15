@@ -43,7 +43,7 @@ See [`cases.json`](cases.json). Ops:
 Language-specific tests (not in `cases.json`):
 
 - After `run_with_timeout` returns, the child has exited (Python: the thread is gone from `threading.enumerate()`;
-  TS: `close` has fired; Go: the done channel is closed; Rust: the closure's captured `Arc` has been dropped).
+  TS: `close` has fired, observed through an optional `onJoined` test hook; Go: the done channel is closed; Rust: the closure's captured `Arc` has been dropped).
 - Each language checks that both 1000 and 5000 actually appear (the upper bound is inclusive).
   This scans seeds 0..100 000: with 4001 possible values, seeds 0..=999 show a given value only about 22% of the time.
 - TS only: `worker.terminate()` force-kills a worker blocked in `Atomics.wait` (comparison only).
