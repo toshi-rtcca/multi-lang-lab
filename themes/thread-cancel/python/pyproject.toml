@@ -1,0 +1,19 @@
+[project]
+name = "thread-cancel"
+version = "0.1.0"
+description = "One child thread, wait with timeout, cooperative cancellation, and join"
+requires-python = ">=3.12"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/thread_cancel"]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
