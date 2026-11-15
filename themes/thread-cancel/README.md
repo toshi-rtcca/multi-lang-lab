@@ -62,7 +62,7 @@ make py-test   # or ts-test / go-test / rs-test, or `make test` for all
 | Interruptible wait (child) | `event.wait(timeout)` → `True` = signaled, `False` = timed out | `Atomics.wait(cell, 0, 0, ms)` → `"timed-out"` vs `"ok"` / `"not-equal"` | `select { case <-ctx.Done(): case <-time.After(d): }` | `cancel_rx.recv_timeout(d)` → `Ok` / `Err(Timeout)` / `Err(Disconnected)` |
 | Uninterruptible sleep (not used) | `time.sleep()` | `Bun.sleep()` is a timer, not a block; a blocking wait (`Atomics.wait`) cannot be reached by `postMessage` | `time.Sleep()` | `thread::sleep()` |
 | Wait with timeout (parent) | `thread.join(timeout)` + `is_alive()` (`join` returns `None` either way) | `Promise.race([reported, timeout])` | `select` on the done channel and `time.After(timeout)` | `done_rx.recv_timeout(timeout)`; `JoinHandle` has no join-with-timeout |
-| Join | `thread.join()` | Await the worker's `close` event | Receive from the done channel (the child's last act) | `handle.join()` (returns the child's value; `Err` if it panicked) |
+| Join | `thread.join()` | Await the worker's `close` event | Drain the done channel until it is closed (`defer close(done)` is the child's last act); there is no handle to join | `handle.join()` (returns the child's value; `Err` if it panicked) |
 | Child → parent result | Shared variable written before the thread ends | `postMessage({ status })` | Value sent on a buffered `chan Status` | Return value of the closure, via `join()` |
 | Seeded random | `random.Random(seed)` (Mersenne Twister) | No seedable PRNG in the language; hand-written mulberry32 | `math/rand/v2`: `rand.New(rand.NewPCG(seed, seed))` | `rand` crate: `StdRng::seed_from_u64(seed)` (ChaCha12) |
 | Inclusive range 1000..=5000 | `randint(1000, 5000)` (**both ends inclusive**) | `1000 + Math.floor(r * 4001)` (`r` in `[0, 1)`) | `1000 + r.IntN(4001)` (`IntN` excludes `n`) | `random_range(1000..=5000)` (`..=` inclusive, `..` exclusive) |
@@ -85,6 +85,8 @@ make py-test   # or ts-test / go-test / rs-test, or `make test` for all
   The alternative `context.WithTimeout(ctx, timeout)` lets the child notice the deadline on its own (no explicit `cancel()` needed
   for the signal, though `defer cancel()` is still required to release the timer); here the explicit version shows the signal.
   The done channel is buffered (capacity 1) so the child's send never blocks, even if nobody is receiving.
+  Goroutines have no handle or ID, so "join" is a convention: here the child closes `done` on exit and the parent
+  waits for that close; `sync.WaitGroup` is the usual tool when there are several children.
 - **Rust**: `recv_timeout` returns `Err(Disconnected)` **immediately** once every `Sender` is dropped.
   If the parent dropped `cancel_tx` too early (e.g. let it go out of scope before waiting), the child would wake at once and
   report `cancelled` without any cancel being sent. The parent therefore keeps `cancel_tx` alive until `join()`;
