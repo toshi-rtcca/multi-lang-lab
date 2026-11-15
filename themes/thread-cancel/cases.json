@@ -1,0 +1,7 @@
+[
+  { "name": "completed", "op": "run", "duration_ms": 1200, "timeout_ms": 3500, "expected_status": "completed", "expected_elapsed_ms": 1200, "tolerance_ms": 200 },
+  { "name": "cancelled", "op": "run", "duration_ms": 4800, "timeout_ms": 3500, "expected_status": "cancelled", "expected_elapsed_ms": 3500, "tolerance_ms": 200 },
+  { "name": "pick-in-range", "op": "pick", "seed": 42, "min": 1000, "max": 5000 },
+  { "name": "pick-deterministic", "op": "pick-repeat", "seed": 42 },
+  { "name": "pick-many-seeds", "op": "pick-range", "seed_from": 0, "seed_to": 999, "min": 1000, "max": 5000 }
+]
