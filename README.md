@@ -69,6 +69,7 @@ multi-lang-lab/
 | [recursive-descent-parser](themes/recursive-descent-parser/) | legacy | Parse and evaluate arithmetic expressions |
 | [reverse-string](themes/reverse-string/) | legacy | Grapheme-aware Unicode string reversal |
 | [subprocess-basic](themes/subprocess-basic/) | legacy | Run `ls -l` and reformat its output as a sorted table |
+| [thread-cancel](themes/thread-cancel/) | current | One child thread, wait with timeout, cooperative cancellation, join; seeded random duration and monotonic elapsed time |
 | [word-count](themes/word-count/) | legacy | Line/word/char counts and top-10 words |
 
 Format: `current` themes have `cases.json`; `legacy` themes do not.
