@@ -1,13 +1,13 @@
 import { describe, expect, test } from "bun:test";
 import cases from "../../cases.json";
-import { pickDuration, runWithTimeout } from "../src/cancel";
+import { pickDuration, runWithTimeout, type Status } from "../src/cancel";
 
 type Case = {
   name: string;
   op: string;
   duration_ms?: number;
   timeout_ms?: number;
-  expected_status?: string;
+  expected_status?: Status;
   expected_elapsed_ms?: number;
   tolerance_ms?: number;
   seed?: number;
